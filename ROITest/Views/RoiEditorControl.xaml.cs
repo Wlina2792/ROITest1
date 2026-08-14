@@ -35,8 +35,7 @@ public partial class RoiEditorControl : UserControl, IEditorContext
         OverlayCanvas.MouseLeftButtonDown += OnMouseLeftButtonDown;
         OverlayCanvas.MouseMove += OnMouseMove;
         OverlayCanvas.MouseLeftButtonUp += OnMouseLeftButtonUp;
-        OverlayCanvas.MouseDoubleClick += OnMouseDoubleClick;
-
+        OverlayCanvas.AddHandler(Control.MouseDoubleClickEvent, new MouseButtonEventHandler(OnMouseDoubleClick), true);
         // 键盘事件
         KeyDown += OnKeyDown;
         Focusable = true;
@@ -361,4 +360,10 @@ public partial class RoiEditorControl : UserControl, IEditorContext
 
     /// <summary>获取控件实际尺寸</summary>
     Size IEditorContext.ControlSize => new Size(ActualWidth, ActualHeight);
+
+
+    void IEditorContext.RefreshCommandStates()
+    {
+        _vm?.RefreshCommandStates();
+    }
 }

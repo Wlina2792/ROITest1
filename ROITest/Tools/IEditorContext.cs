@@ -24,4 +24,6 @@ public interface IEditorContext
 
     /// <summary>控件实际尺寸</summary>
     Size ControlSize { get; }
+    /// <summary>刷新命令状态</summary>
+    void RefreshCommandStates();
 }

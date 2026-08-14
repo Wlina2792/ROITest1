@@ -60,7 +60,7 @@ public class UndoRedoService
         if (!CanUndo) return false;
 
         var action = _undoStack.Pop();
-        action.UndoAction();
+        action.UndoExecuteAction();
         _redoStack.Push(action);
         return true;
     }
@@ -95,11 +95,11 @@ public class UndoRedoService
 internal class UndoAction
 {
     public Action DoAction { get; }
-    public Action UndoAction { get; }
+    public Action UndoExecuteAction { get; }
 
     public UndoAction(Action doAction, Action undoAction)
     {
         DoAction = doAction ?? throw new ArgumentNullException(nameof(doAction));
-        UndoAction = undoAction ?? throw new ArgumentNullException(nameof(undoAction));
+        UndoExecuteAction = undoAction ?? throw new ArgumentNullException(nameof(undoAction));
     }
 }
