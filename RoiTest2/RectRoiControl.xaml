@@ -1,0 +1,71 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:RoiTest2">
+
+    <!-- Thumb 手柄通用样式 -->
+    <Style x:Key="ROIThumbStyle" TargetType="{x:Type Thumb}">
+        <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="Red" />
+        <Setter Property="Width" Value="10" />
+        <Setter Property="Height" Value="10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Rectangle Stroke="{TemplateBinding Foreground}"
+                               Fill="{TemplateBinding Background}"
+                               StrokeThickness="2"
+                               Cursor="SizeAll" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- RectRoiControl 控件模板 -->
+    <Style TargetType="{x:Type local:RectRoiControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:RectRoiControl}">
+                    <Grid>
+                        <!-- 矩形图形 -->
+                        <local:RectRoiShape
+                            X="{TemplateBinding X}"
+                            Y="{TemplateBinding Y}"
+                            W="{TemplateBinding W}"
+                            H="{TemplateBinding H}"
+                            Stroke="Red"
+                            StrokeThickness="2"
+                            Fill="Blue"
+                            Opacity="0.3"/>
+
+                        <!-- 整体移动手柄（覆盖整个矩形区域） -->
+                        <Thumb x:Name="MoveTracker"
+                               Width="{TemplateBinding W}"
+                               Height="{TemplateBinding H}"
+                               Margin="{TemplateBinding X}"
+                               Background="Transparent"
+                               Cursor="SizeAll">
+                            <Thumb.Template>
+                                <ControlTemplate TargetType="Thumb">
+                                    <Border Background="Transparent" Cursor="SizeAll" />
+                                </ControlTemplate>
+                            </Thumb.Template>
+                        </Thumb>
+
+                        <!-- 8个调整手柄 -->
+                        <Thumb x:Name="LeftTopTracker"    Style="{StaticResource ROIThumbStyle}" Cursor="SizeNWSE" />
+                        <Thumb x:Name="CenterTopTracker"  Style="{StaticResource ROIThumbStyle}" Cursor="SizeNS" />
+                        <Thumb x:Name="RightTopTracker"   Style="{StaticResource ROIThumbStyle}" Cursor="SizeNESW" />
+                        <Thumb x:Name="LeftCenterTracker" Style="{StaticResource ROIThumbStyle}" Cursor="SizeWE" />
+                        <Thumb x:Name="RightCenterTracker" Style="{StaticResource ROIThumbStyle}" Cursor="SizeWE" />
+                        <Thumb x:Name="LeftBottomTracker" Style="{StaticResource ROIThumbStyle}" Cursor="SizeNESW" />
+                        <Thumb x:Name="CenterBottomTracker" Style="{StaticResource ROIThumbStyle}" Cursor="SizeNS" />
+                        <Thumb x:Name="RightBottomTracker" Style="{StaticResource ROIThumbStyle}" Cursor="SizeNWSE" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
