@@ -5,11 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RoiTest2"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=local:VM}"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Canvas Margin="10" Background="GreenYellow">
+    <Grid RowDefinitions="50 *" >
+        <UniformGrid >
+            <TextBlock Text="{Binding X,Mode=TwoWay}" />
+            <TextBlock Text="{Binding Y,Mode=TwoWay}" />
+            <TextBlock Text="{Binding W,Mode=TwoWay}" />
+            <TextBlock Text="{Binding H,Mode=TwoWay}" />
+        </UniformGrid>
+        <Canvas Grid.Row="1" Margin="10" Background="GreenYellow">
             <local:RectRoiControl
-        X="100" Y="100" W="200" H="150"
+       X="{Binding X}"
+       Y="{Binding Y}"
+       W="{Binding W}"
+       H="{Binding H}"
      ></local:RectRoiControl>        </Canvas>
     </Grid>
 </Window>

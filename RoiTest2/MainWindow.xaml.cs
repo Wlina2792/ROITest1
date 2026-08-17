@@ -19,6 +19,7 @@ namespace RoiTest2
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext=new VM();
         }
     }
 }
