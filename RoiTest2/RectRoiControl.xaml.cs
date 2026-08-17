@@ -8,7 +8,7 @@ namespace RoiTest2;
 
 public class RectRoiControl : Control
 {
-    private const double MinSize = 10;
+    private const double MinSize = 4;
     private const double HalfThumbSize = 5;
 
     #region 字段
@@ -173,9 +173,9 @@ public class RectRoiControl : Control
 
     private void LeftTopTracker_DragDelta(object sender, DragDeltaEventArgs e)
     {
-        var newW = W - e.HorizontalChange;
-        var newH = H - e.VerticalChange;
-        if (newW < MinSize || newH < MinSize) return;
+        var newW = Math.Max(W - e.HorizontalChange, MinSize);
+        var newH = Math.Max(H - e.VerticalChange, MinSize);
+        if (newH == MinSize|| newW == MinSize) return;
 
         var newLeft = (double.IsNaN(Canvas.GetLeft(this)) ? 0 : Canvas.GetLeft(this)) + e.HorizontalChange;
         var newTop = (double.IsNaN(Canvas.GetTop(this)) ? 0 : Canvas.GetTop(this)) + e.VerticalChange;
@@ -192,11 +192,12 @@ public class RectRoiControl : Control
 
     private void RightTopTracker_DragDelta(object sender, DragDeltaEventArgs e)
     {
-        var newW = W + e.HorizontalChange;
-        var newH = H - e.VerticalChange;
-        if (newW < MinSize || newH < MinSize) return;
-
+        var newW = Math.Max(W + e.HorizontalChange, MinSize);
+        var newH = Math.Max(H - e.VerticalChange, MinSize);
+        if (newH == MinSize) return;
         var newTop = (double.IsNaN(Canvas.GetTop(this)) ? 0 : Canvas.GetTop(this)) + e.VerticalChange;
+
+       
 
         SetCurrentValue(Canvas.TopProperty, newTop);
         SetCurrentValue(YProperty, newTop);
@@ -208,12 +209,13 @@ public class RectRoiControl : Control
 
     private void LeftBottomTracker_DragDelta(object sender, DragDeltaEventArgs e)
     {
-        var newW = W - e.HorizontalChange;
-        var newH = H + e.VerticalChange;
-        if (newW < MinSize || newH < MinSize) return;
+        var newW = Math.Max(W - e.HorizontalChange, MinSize);
+        var newH = Math.Max(H + e.VerticalChange, MinSize);
 
+        if (newW == MinSize) return;
         var newLeft = (double.IsNaN(Canvas.GetLeft(this)) ? 0 : Canvas.GetLeft(this)) + e.HorizontalChange;
 
+       
         SetCurrentValue(Canvas.LeftProperty, newLeft);
         SetCurrentValue(XProperty, newLeft);
         SetCurrentValue(WProperty, newW);
@@ -224,9 +226,9 @@ public class RectRoiControl : Control
 
     private void RightBottomTracker_DragDelta(object sender, DragDeltaEventArgs e)
     {
-        var newW = W + e.HorizontalChange;
-        var newH = H + e.VerticalChange;
-        if (newW < MinSize || newH < MinSize) return;
+        var newW = Math.Max(W + e.HorizontalChange, MinSize);
+        var newH = Math.Max(H + e.VerticalChange, MinSize);
+        
 
         SetCurrentValue(WProperty, newW);
         SetCurrentValue(HProperty, newH);
@@ -242,6 +244,17 @@ public class RectRoiControl : Control
     {
         var control = d as RectRoiControl;
         control?.LocateAllTrackers();
+        // X/Y 变化时同步设置 Canvas 位置
+        if (e.Property == XProperty || e.Property == YProperty)
+        {
+            control?.SetCanvasPosition();
+        }
+    }
+
+    private void SetCanvasPosition()
+    {
+        SetCurrentValue(Canvas.LeftProperty, X);
+        SetCurrentValue(Canvas.TopProperty, Y);
     }
 
     private void LocateAllTrackers()
