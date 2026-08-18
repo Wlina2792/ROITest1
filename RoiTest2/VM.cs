@@ -14,6 +14,12 @@ public partial class VM:ObservableObject
     [ObservableProperty] private double w=200;
     [ObservableProperty] private double h=200;
 
+    [ObservableProperty] private bool isSelected = false;
 
+    [RelayCommand]
+    private void Select()
+    {
+        IsSelected = !IsSelected;
+    }
 
 }

@@ -3,7 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:RoiTest2">
 
-    <!--  左上 ┐  -->
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <!--  左上  -->
     <Style x:Key="LeftTopThumbStyle" TargetType="{x:Type Thumb}">
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
         <Setter Property="Width" Value="10" />
@@ -11,8 +12,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Path Data="M1,1 L9,1 L9,3 L3,3 L3,9 L1,9 Z"
-                      Fill="Red" RenderTransformOrigin="0,0">
+                    <Path
+                        Data="M1,1 L9,1 L9,3 L3,3 L3,9 L1,9 Z"
+                        Fill="Red"
+                        RenderTransformOrigin="0,0">
                         <Path.RenderTransform>
                             <TranslateTransform X="2" Y="2" />
                         </Path.RenderTransform>
@@ -22,7 +25,7 @@
         </Setter>
     </Style>
 
-    <!--  右上 └  -->
+    <!--  右上  -->
     <Style x:Key="RightTopThumbStyle" TargetType="{x:Type Thumb}">
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
         <Setter Property="Width" Value="10" />
@@ -30,8 +33,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Path Data="M1,1 L9,1 L9,9 L7,9 L7,3 L1,3 Z"
-                      Fill="Red" RenderTransformOrigin="0,0">
+                    <Path
+                        Data="M1,1 L9,1 L9,9 L7,9 L7,3 L1,3 Z"
+                        Fill="Red"
+                        RenderTransformOrigin="0,0">
                         <Path.RenderTransform>
                             <TranslateTransform X="-2" Y="2" />
                         </Path.RenderTransform>
@@ -41,7 +46,7 @@
         </Setter>
     </Style>
 
-    <!--  左下 ┘  -->
+    <!--  左下  -->
     <Style x:Key="LeftBottomThumbStyle" TargetType="{x:Type Thumb}">
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
         <Setter Property="Width" Value="10" />
@@ -49,8 +54,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Path Data="M1,1 L3,1 L3,7 L9,7 L9,9 L1,9 Z"
-                      Fill="Red" RenderTransformOrigin="0,0">
+                    <Path
+                        Data="M1,1 L3,1 L3,7 L9,7 L9,9 L1,9 Z"
+                        Fill="Red"
+                        RenderTransformOrigin="0,0">
                         <Path.RenderTransform>
                             <TranslateTransform X="2" Y="-2" />
                         </Path.RenderTransform>
@@ -60,7 +67,7 @@
         </Setter>
     </Style>
 
-    <!--  右下 ┌  -->
+    <!--  右下  -->
     <Style x:Key="RightBottomThumbStyle" TargetType="{x:Type Thumb}">
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
         <Setter Property="Width" Value="10" />
@@ -68,8 +75,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Path Data="M7,1 L9,1 L9,9 L1,9 L1,7 L7,7 Z"
-                      Fill="Red" RenderTransformOrigin="0,0">
+                    <Path
+                        Data="M7,1 L9,1 L9,9 L1,9 L1,7 L7,7 Z"
+                        Fill="Red"
+                        RenderTransformOrigin="0,0">
                         <Path.RenderTransform>
                             <TranslateTransform X="-2" Y="-2" />
                         </Path.RenderTransform>
@@ -89,10 +98,10 @@
 
                         <!--  矩形  -->
                         <local:RectRoiShape
-                            Fill="#1677ff"
+                            Fill="Transparent"
                             H="{TemplateBinding H}"
-                            Opacity="0.6"
-                            Stroke="Blue"
+                           
+                            Stroke="{TemplateBinding BorderBrush}"
                             StrokeThickness="1"
                             W="{TemplateBinding W}"
                             X="0"
@@ -103,37 +112,42 @@
                             x:Name="MoveTracker"
                             Canvas.Left="0"
                             Canvas.Top="0"
+                              Background="{TemplateBinding Background}"  
                             Width="{TemplateBinding W}"
-                            Height="{TemplateBinding H}"
-                            Background="Transparent"
-                            Cursor="SizeAll">
+                            Height="{TemplateBinding H}"        Opacity="{TemplateBinding Opacity}"
+                            Cursor="SizeAll"
+                            Visibility="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Thumb.Template>
                                 <ControlTemplate TargetType="Thumb">
-                                    <Border Background="Transparent" Cursor="SizeAll" />
+                                    <Border Background="{TemplateBinding Background}" Cursor="SizeAll" />
                                 </ControlTemplate>
                             </Thumb.Template>
                         </Thumb>
 
-                        <!--  四个角把手  -->
+                        <!--  四个角把手：Visibility 直接绑定到 IsSelected  -->
                         <Thumb
                             x:Name="LeftTopTracker"
                             Cursor="SizeNWSE"
-                            Style="{StaticResource LeftTopThumbStyle}" />
+                            Style="{StaticResource LeftTopThumbStyle}"
+                            Visibility="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                         <Thumb
                             x:Name="RightTopTracker"
                             Cursor="SizeNESW"
-                            Style="{StaticResource RightTopThumbStyle}" />
+                            Style="{StaticResource RightTopThumbStyle}"
+                            Visibility="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                         <Thumb
                             x:Name="LeftBottomTracker"
                             Cursor="SizeNESW"
-                            Style="{StaticResource LeftBottomThumbStyle}" />
+                            Style="{StaticResource LeftBottomThumbStyle}"
+                            Visibility="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                         <Thumb
                             x:Name="RightBottomTracker"
                             Cursor="SizeNWSE"
-                            Style="{StaticResource RightBottomThumbStyle}" />
+                            Style="{StaticResource RightBottomThumbStyle}"
+                            Visibility="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                     </Canvas>
                 </ControlTemplate>

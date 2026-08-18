@@ -23,6 +23,12 @@ public class RectRoiControl : Control
 
     #region 依赖属性
 
+    public static readonly DependencyProperty IsSelectedProperty =
+        DependencyProperty.Register(
+            nameof(IsSelected),
+            typeof(bool),
+            typeof(RectRoiControl),
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnRectChanged));
     public static readonly DependencyProperty XProperty =
         DependencyProperty.Register(nameof(X), typeof(double), typeof(RectRoiControl),
             new FrameworkPropertyMetadata(0.0,
@@ -56,6 +62,12 @@ public class RectRoiControl : Control
     #endregion
 
     #region 属性包装
+
+    public bool IsSelected
+    {
+        get => (bool)GetValue(IsSelectedProperty);
+        set => SetValue(IsSelectedProperty, value);
+    }
 
     public double X
     {
